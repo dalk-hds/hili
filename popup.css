@@ -1,0 +1,9 @@
+body {
+  min-width: 420px;
+  display: flex;
+  flex-direction: column;
+}
+
+#keywords {
+  min-height: 420px;
+}
