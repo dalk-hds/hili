@@ -3,16 +3,17 @@
   "name": "Keyword Highlighter",
   "version": "1.0",
   "description": "Highlights keywords defined by the user.",
-  "permissions": ["storage", "activeTab", "scripting"],
+  "permissions": ["storage"],
   "host_permissions": ["<all_urls>"],
   "action": {
     "default_popup": "popup.html"
   },
   "content_scripts": [
     {
+      "run_at": "document_idle",
       "matches": ["<all_urls>"],
-      "js": ["content.js"],
-      "css": ["content.css"]
+      "js": ["hili.js"],
+      "css": ["hili.css"]
     }
   ]
 }
