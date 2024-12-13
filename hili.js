@@ -3,8 +3,9 @@ var IsScriptTag = node => node.parentNode.nodeName === 'SCRIPT'
 var IsNoScriptTag = node => node.parentNode.nodeName === 'NOSCRIPT'
 var IsStyleTag = node => node.parentNode.nodeName === 'STYLE'
 var IsFormTag = node => node.parentNode.nodeName === 'FORM'
+var IsMarked = node => node.parentNode.nodeName === 'MARK'
 
-var IsNodeValid = node => [IsScriptTag, IsNoScriptTag, IsStyleTag, IsFormTag].every(test => !test(node))
+var IsNodeValid = node => [IsScriptTag, IsNoScriptTag, IsStyleTag, IsFormTag, IsMarked].every(test => !test(node))
 
 var Span = (html) => {
   const span = document.createElement('span');
@@ -14,7 +15,6 @@ var Span = (html) => {
 
 function hili() {
   chrome.storage.sync.get('keywords', ({ keywords }) => {
-    console.log('start hili', keywords)
     if (!keywords || keywords.length === 0) return;
     const regex = new RegExp(`(${keywords.join('|')})`, 'gi');
     const walk = (node) => {
@@ -32,5 +32,16 @@ function hili() {
   });
 }
 
+function onDomChanged(targetNode, callback) {
+  const config = { attributes: false, childList: true, subtree: false };
+  const observer = new MutationObserver((mutationList, observer) => {
+    for (const mutation of mutationList) {
+      if (mutation.type === "childList") callback()
+    }
+  });
+  observer.observe(targetNode, config);
+}
+
 hili()
-setTimeout(() => hili(), 3000)
+onDomChanged(document.body, () => hili())
+
