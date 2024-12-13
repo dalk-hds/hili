@@ -33,7 +33,7 @@ function hili() {
 }
 
 function onDomChanged(targetNode, callback) {
-  const config = { attributes: false, childList: true, subtree: false };
+  const config = { attributes: false, childList: true, subtree: true };
   const observer = new MutationObserver((mutationList, observer) => {
     for (const mutation of mutationList) {
       if (mutation.type === "childList") callback()
